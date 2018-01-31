@@ -1,0 +1,29 @@
+<% include header %>
+   
+<table class="table table-hover">
+    <thead>
+        <tr><th>Id</th>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% entries.forEach(function(entry) { %>
+        <tr>
+            <td>
+                    <%= entry._id %>
+                  
+            </td>
+            <td>
+                <a href="displayleads/<%= entry.name %>">
+                <%= entry.name %></a>
+            </td>
+            <td>
+                <%= entry.score %>
+            </td>
+        </tr>
+        <% }) %>
+    </tbody>
+
+    <% include footer %>

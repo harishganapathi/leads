@@ -1,0 +1,11 @@
+{
+  "name": "leaderboard",
+  "author": "harishganapathi",
+  "private": true,
+  "dependencies": {
+    "express": "*",
+    "mongodb": "^2.2.33",
+    "mongoose": "^5.0.2",
+    "nodemon": "^1.14.11"
+  }
+}

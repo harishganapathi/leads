@@ -1,0 +1,15 @@
+<% include header %>
+    <form method="POST" role="form">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="uname" name="uname" value = "<%= seplead.name %>" >
+            <label for="score">Score</label>
+            <input type="number" id="score" name="score" value = "<%= seplead.score %>">
+            <input type="submit" value="post" class="btn btn-info">
+        </div>
+    </form>
+
+
+
+
+    <% include footer %>
