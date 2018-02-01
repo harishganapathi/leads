@@ -12,16 +12,16 @@
         <% entries.forEach(function(entry) { %>
         <tr>
             <td>
-                    <%= entry._id %>
-                  
-            </td>
-            <td>
                 <a href="displayleads/<%= entry.name %>">
                 <%= entry.name %></a>
             </td>
             <td>
                 <%= entry.score %>
             </td>
+            <td>
+                <%= entry.creator %>
+            </td>
+
         </tr>
         <% }) %>
     </tbody>

@@ -3,9 +3,16 @@
   "author": "harishganapathi",
   "private": true,
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bcrypt-nodejs": "0.0.3",
+    "connect-flash-plus": "^0.2.1",
+    "cookie-parser": "^1.4.3",
     "express": "*",
+    "express-session": "^1.15.6",
     "mongodb": "^2.2.33",
     "mongoose": "^5.0.2",
-    "nodemon": "^1.14.11"
+    "nodemon": "^1.14.11",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   }
 }
