@@ -17,8 +17,8 @@ var bCrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var User       = require('./public/user');
 var configDB = 'mongodb://localhost/passport'
-mongoose.connect(configDB); 
 
+mongoose.connect(configDB); 
 app.use(expressSession({secret:'secretssh'}))
 app.use(passport.initialize())
 app.use(passport.session());
@@ -47,7 +47,8 @@ MongoClient.connect(url, function (err, database) {
 });
 //routes goes this way 
 app.get('/displayleads',logincheck, function (request, response) {
-    var entries = dab.collection('leads').find().toArray(function (err, result) {
+ 
+    var entries = dab.collection('leads').find().sort({score :1}).toArray(function (err, result) {
     if (err) return err
     response.render('displayleads',{ entries:result })    
     })
