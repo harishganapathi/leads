@@ -1,24 +1,31 @@
 <% include header %>
     
 <div class="panel panel-primary">
-        <div class="panel-heading">Scores 
+        <div class="panel-heading"> 
+            <div class="col-md-1">
             <a class="btn btn-success" <a href="<%= seplead.name %>/edit">
                 <!-- edit the existing data from table -->
                 <span class="glyphicon glyphicon-edit">Edit</span>
             </a>
+    </div><div class="col-md-8">
+        <center><h3>Scores</h3></center>
+    </div>
+    <div class="col-md-1">
             <a class="btn btn-danger"  href="<%= seplead.name %>/delete">
                 <span class="glyphicon glyphicon-trash">Delete</span>
-                <!-- delete the existing data from table -->
-            </a>
+            </a></div>
+            <br>
+            <br>
+            <br>
+            <br>
              </div>
         <div class="panel-body">
-            <h5>
+            <h4>
                 The name is <%= seplead.name %>
-            </h5>
-            <h5>
+            
                 and score is 
             <%= seplead.score %>
-            </h5>
+            </h4>
         </div>
     </div>
 

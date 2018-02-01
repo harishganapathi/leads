@@ -38,34 +38,29 @@ passport.deserializeUser(function (id, done) {
         done(err, user);
     });
 });
-
+// mongodb connect function 
 var dab;
 MongoClient.connect(url, function (err, database) {
     if (err) return console.log(err);
     console.log("Connected successfully to server");
     dab = database.db('mydb')
-    //User=database.db('passport')
 });
-
+//routes goes this way 
 app.get('/displayleads',logincheck, function (request, response) {
     var entries = dab.collection('leads').find().toArray(function (err, result) {
     if (err) return err
-    console.log(result)
     response.render('displayleads',{ entries:result })    
     })
 });
 
 app.get('/displayleads/:name',logincheck,function(request,response){
-    //console.log(request)
     var seplead =  dab.collection('leads').findOne({name:request.params.name},function(err,eachlead){
     if(err) throw err
-    //console.log(eachlead)
     return response.render('eachleads',{seplead:eachlead})
     })
 });
 
 app.get('/displayleads/:name/edit', logincheck,function (request, response) {
-    //console.log(request)
     var seplead = dab.collection('leads').findOne({ name: request.params.name }, function (err, eachlead) {
         if (err) throw err
         console.log(eachlead)
@@ -75,20 +70,26 @@ app.get('/displayleads/:name/edit', logincheck,function (request, response) {
 });
 
 app.post('/displayleads/:name/edit',logincheck, function (request, response) {
-
     if (!request.body.uname || !request.body.score) {
         response.send("<h1> Please fill in the form</h1>")
     }
     else
-    {
-        var upleads = dab.collection('leads').updateOne({ name: request.params.name }, { $set: { name: request.body.uname, score: request.body.score}} , function (err, res) {
-        if (err) throw err
-        return res
-        console.log('update lead works ')
+    {  
+        dab.collection('leads').findOne({ name: request.params.name }, function (err, res) {
+           if(request.user.local.email == res.creator)
         
-    })
-        return response.redirect('/displayleads')
-}
+        {
+            var upleads = dab.collection('leads').updateOne({ name: request.params.name }, { $set: { name: request.body.uname, score: request.body.score}} , function (err, res) {
+            if (err) throw err
+            })    
+            return response.redirect('/displayleads')
+        }
+        else
+        {
+            return response.redirect('/displayleads')
+        }
+            })
+    }
 });
 
 app.get('/newleads', logincheck,function (request, response) {
@@ -96,8 +97,6 @@ app.get('/newleads', logincheck,function (request, response) {
 });
 
 app.post('/newleads',function(request,response){
-    console.log(request.user.local.email)
-    console.log('response--------------->')
     //console.log(response)
     if( !request.body.uname || !request.body.score ){
         response.send("<h1> Please fill in the form</h1>")
@@ -117,11 +116,26 @@ response.redirect('/displayleads')
 
 
 app.get('/displayleads/:name/delete',logincheck,function(request,response){
-    dab.collection('leads').deleteOne({name:request.params.name},function(err,res){
+dab.collection('leads').findOne({ name: request.params.name }, function (err, res) {
+           if(request.user.local.email == res.creator)
+        
+        {
+        dab.collection('leads').deleteOne({name:request.params.name},function(err,res){
         if (err) throw err
         console.log('deleted')
         response.redirect('/displayleads')
-    })
+        })
+        }
+        else
+        {
+            return response.redirect('/displayleads')
+        }
+            })
+
+
+
+
+  
 })
 app.get('/signup', function (request, response) {
     response.render('signup');
@@ -144,7 +158,6 @@ app.post('/signup', passport.authenticate('local-signup', {
     failureFlash: true
 }));
 app.get('/logout',logincheck, function(request, response) {
-
         request.logout();
         response.redirect('/');
     });
@@ -153,10 +166,14 @@ app.use(function (request, response) {
     response.statusCode = 404;
     response.end("404!");
 });
+ // end of routes 
 
+
+//server listen
 http.createServer(app).listen(8000)
 
 
+//strategy passport 
 passport.use('local-signup', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
@@ -259,6 +276,9 @@ passport.use('local-login', new LocalStrategy({
         });
 
     }));
+
+
+    //check user is authenticated 
 
 function logincheck(request,response,next){
         if(request.isAuthenticated())
